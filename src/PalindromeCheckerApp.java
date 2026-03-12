@@ -1,49 +1,65 @@
-import java.util.Stack;
-
 /**
- * ==========================================================
+ * ============================================================
  * MAIN CLASS - PalindromeCheckerApp
- * ==========================================================
- * Use Case 5: Stack Based Palindrome Checker
+ * ============================================================
+ *
+ * Use Case : Recursive Palindrome Checker
  *
  * Description:
- * This class validates a palindrome using a Stack
- * data structure which follows the LIFO principle.
+ * This class validates a palindrome using recursion.
+ * Characters are compared from the outer positions
+ * moving inward using recursive calls.
+ *
+ * The recursion stops when:
+ * - All characters are matched, or
+ * - A mismatch is found.
+ *
+ * This example demonstrates divide-and-conquer
+ * logic using method recursion.
  *
  * @author Developer
- * @version 5.0
+ * @version 1.0
  */
 
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
-        String input = "noon";
 
-        // Create a Stack to store characters
-        Stack<Character> stack = new Stack<>();
+        String input = "madam";
 
-        // Push each character into the stack
-        for (char c : input.toCharArray()) {
-            stack.push(c);
+        System.out.println("Input : " + input);
+
+        boolean result = check(input, 0, input.length() - 1);
+
+        System.out.println("Is Palindrome? : " + result);
+    }
+
+    /**
+     * Recursively checks whether a string is palindrome.
+     *
+     * @param s     Input string
+     * @param start Starting index
+     * @param end   Ending index
+     * @return true if palindrome, otherwise false
+     */
+    private static boolean check(String s, int start, int end) {
+
+        // Base condition: if pointers meet or cross
+        if (start >= end) {
+            return true;
         }
 
-        // Assume palindrome initially
-        boolean isPalindrome = true;
-
-        // Compare by popping from stack
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
-                isPalindrome = false;
-                break;
-            }
+        // If characters are not equal
+        if (s.charAt(start) != s.charAt(end)) {
+            return false;
         }
 
-        // Display result
-        System.out.println("Input String: " + input);
-        if (isPalindrome) {
-            System.out.println("Result: The string is a palindrome.");
-        } else {
-            System.out.println("Result: The string is NOT a palindrome.");
-        }
+        // Recursive call moving towards the center
+        return check(s, start + 1, end - 1);
     }
 }
