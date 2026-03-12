@@ -3,28 +3,26 @@
  * MAIN CLASS - PalindromeCheckerApp
  * ============================================================
  *
- * Use Case : Recursive Palindrome Checker with Normalization
+ * Use Case : Recursive Palindrome Checker with Normalization using Object-Oriented Design
  *
  * Description:
  * This class validates a palindrome after preprocessing
  * the input string by removing spaces and symbols and converting
  * it to lowercase.
  *
- * Then, it checks palindrome recursively by comparing characters
- * from the outer positions moving inward.
+ * The palindrome logic is encapsulated inside a
+ * PalindromeService class that uses recursion.
  *
- * The recursion stops when:
- * - All characters are matched, or
- * - A mismatch is found.
- *
- * This example demonstrates a combination of normalization and
- * recursive palindrome check logic.
+ * This improves:
+ * - Reusability
+ * - Readability
+ * - Separation of concerns
  *
  * Example:
  * "A man a plan a canal Panama"
  *
  * @author Developer
- * @version 1.0
+ * @version 1.1.0
  */
 public class PalindromeCheckerApp {
 
@@ -34,40 +32,50 @@ public class PalindromeCheckerApp {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-        // Example input
         String input = "A man a plan a canal Panama";
 
-        // Normalize input by removing non-alphanumeric characters and converting to lowercase
+        // Normalize input
         String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
+        PalindromeService service = new PalindromeService();
+
+        boolean result = service.checkPalindrome(normalized);
+
         System.out.println("Input : " + input);
-
-        boolean result = check(normalized, 0, normalized.length() - 1);
-
         System.out.println("Is Palindrome? : " + result);
+    }
+}
+
+/**
+ * Service class that contains palindrome logic.
+ */
+class PalindromeService {
+
+    /**
+     * Checks whether the input string is a palindrome using recursion.
+     *
+     * @param input Input string (assumed normalized)
+     * @return true if palindrome, false otherwise
+     */
+    public boolean checkPalindrome(String input) {
+        return checkRecursive(input, 0, input.length() - 1);
     }
 
     /**
-     * Recursively checks whether a string is palindrome.
+     * Recursive helper method to check palindrome.
      *
-     * @param s     Input string (already normalized)
+     * @param s     Input string
      * @param start Starting index
      * @param end   Ending index
-     * @return true if palindrome, otherwise false
+     * @return true if palindrome, false otherwise
      */
-    private static boolean check(String s, int start, int end) {
-
-        // Base condition: if pointers meet or cross
+    private boolean checkRecursive(String s, int start, int end) {
         if (start >= end) {
             return true;
         }
-
-        // If characters are not equal
         if (s.charAt(start) != s.charAt(end)) {
             return false;
         }
-
-        // Recursive call moving towards the center
-        return check(s, start + 1, end - 1);
+        return checkRecursive(s, start + 1, end - 1);
     }
 }
