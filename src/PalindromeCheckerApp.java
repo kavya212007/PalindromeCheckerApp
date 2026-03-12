@@ -3,35 +3,49 @@
  * MAIN CLASS - PalindromeCheckerApp
  * =================================================================
  *
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison of Palindrome Algorithms
  *
  * Description:
- * Demonstrates how different palindrome validation algorithms
- * can be selected dynamically at runtime using the Strategy Design Pattern.
- * This example includes:
+ * This class measures and compares execution performance of
+ * different palindrome strategies.
+ * It demonstrates:
  * - Stack-based strategy
  * - Recursive strategy
+ * - Dynamic strategy selection (Strategy Pattern)
+ * - Execution time measurement
  *
  * Author: Developer
- * Version: 12.0
+ * Version: 13.0
  */
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
         String testInput = "A man a plan a canal Panama";
 
-        // Choose strategy: Stack-based or Recursive
-        PalindromeStrategy strategy;
+        // Array of strategies to benchmark
+        PalindromeStrategy[] strategies = {
+            new StackStrategy(),
+            new RecursiveStrategy()
+        };
 
-        // Example 1: Stack-based
-        strategy = new StackStrategy();
-        boolean stackResult = strategy.isValid(testInput);
-        System.out.println("Input: " + testInput);
-        System.out.println("Is Palindrome (Stack Strategy): " + stackResult);
+        for (PalindromeStrategy strategy : strategies) {
+            String strategyName = strategy.getClass().getSimpleName();
 
-        // Example 2: Recursive-based
-        strategy = new RecursiveStrategy();
-        boolean recursiveResult = strategy.isValid(testInput);
-        System.out.println("Is Palindrome (Recursive Strategy): " + recursiveResult);
+            // Capture start time
+            long startTime = System.nanoTime();
+
+            boolean result = strategy.isValid(testInput);
+
+            // Capture end time
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
+
+            // Output benchmarking results
+            System.out.println("Strategy: " + strategyName);
+            System.out.println("Input: " + testInput);
+            System.out.println("Is Palindrome? : " + result);
+            System.out.println("Execution Time: " + duration + " ns");
+            System.out.println("----------------------------------------");
+        }
     }
 }
 
