@@ -1,81 +1,91 @@
 /**
- * ============================================================
+ * =================================================================
  * MAIN CLASS - PalindromeCheckerApp
- * ============================================================
+ * =================================================================
  *
- * Use Case : Recursive Palindrome Checker with Normalization using Object-Oriented Design
+ * Use Case 12: Strategy Pattern for Palindrome Algorithms
  *
  * Description:
- * This class validates a palindrome after preprocessing
- * the input string by removing spaces and symbols and converting
- * it to lowercase.
+ * Demonstrates how different palindrome validation algorithms
+ * can be selected dynamically at runtime using the Strategy Design Pattern.
+ * This example includes:
+ * - Stack-based strategy
+ * - Recursive strategy
  *
- * The palindrome logic is encapsulated inside a
- * PalindromeService class that uses recursion.
- *
- * This improves:
- * - Reusability
- * - Readability
- * - Separation of concerns
- *
- * Example:
- * "A man a plan a canal Panama"
- *
- * @author Developer
- * @version 1.1.0
+ * Author: Developer
+ * Version: 12.0
  */
 public class PalindromeCheckerApp {
-
-    /**
-     * Application entry point.
-     *
-     * @param args Command-line arguments
-     */
     public static void main(String[] args) {
-        String input = "A man a plan a canal Panama";
+        String testInput = "A man a plan a canal Panama";
 
-        // Normalize input
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // Choose strategy: Stack-based or Recursive
+        PalindromeStrategy strategy;
 
-        PalindromeService service = new PalindromeService();
+        // Example 1: Stack-based
+        strategy = new StackStrategy();
+        boolean stackResult = strategy.isValid(testInput);
+        System.out.println("Input: " + testInput);
+        System.out.println("Is Palindrome (Stack Strategy): " + stackResult);
 
-        boolean result = service.checkPalindrome(normalized);
-
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
+        // Example 2: Recursive-based
+        strategy = new RecursiveStrategy();
+        boolean recursiveResult = strategy.isValid(testInput);
+        System.out.println("Is Palindrome (Recursive Strategy): " + recursiveResult);
     }
 }
 
 /**
- * Service class that contains palindrome logic.
+ * =================================================================
+ * INTERFACE - PalindromeStrategy
+ * =================================================================
  */
-class PalindromeService {
+interface PalindromeStrategy {
+    boolean isValid(String input);
+}
 
-    /**
-     * Checks whether the input string is a palindrome using recursion.
-     *
-     * @param input Input string (assumed normalized)
-     * @return true if palindrome, false otherwise
-     */
-    public boolean checkPalindrome(String input) {
-        return checkRecursive(input, 0, input.length() - 1);
+/**
+ * =================================================================
+ * CLASS - StackStrategy
+ * =================================================================
+ */
+class StackStrategy implements PalindromeStrategy {
+    @Override
+    public boolean isValid(String input) {
+        if (input == null) return false;
+
+        String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+
+        for (char c : cleanInput.toCharArray()) {
+            stack.push(c);
+        }
+
+        StringBuilder reversed = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversed.append(stack.pop());
+        }
+
+        return cleanInput.equals(reversed.toString());
+    }
+}
+
+/**
+ * =================================================================
+ * CLASS - RecursiveStrategy
+ * =================================================================
+ */
+class RecursiveStrategy implements PalindromeStrategy {
+    @Override
+    public boolean isValid(String input) {
+        if (input == null) return false;
+        String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        return checkRecursive(cleanInput, 0, cleanInput.length() - 1);
     }
 
-    /**
-     * Recursive helper method to check palindrome.
-     *
-     * @param s     Input string
-     * @param start Starting index
-     * @param end   Ending index
-     * @return true if palindrome, false otherwise
-     */
     private boolean checkRecursive(String s, int start, int end) {
-        if (start >= end) {
-            return true;
-        }
-        if (s.charAt(start) != s.charAt(end)) {
-            return false;
-        }
+        if (start >= end) return true;
+        if (s.charAt(start) != s.charAt(end)) return false;
         return checkRecursive(s, start + 1, end - 1);
     }
 }
