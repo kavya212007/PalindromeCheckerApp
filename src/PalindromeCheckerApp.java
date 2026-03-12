@@ -1,64 +1,49 @@
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.Stack;
 
 /**
+ * ==========================================================
  * MAIN CLASS - PalindromeCheckerApp
- * ==========================================================================
- * Use Case 8: Linked List Based Palindrome Checker
+ * ==========================================================
+ * Use Case 5: Stack Based Palindrome Checker
  *
  * Description:
- * This class checks whether a string is a palindrome using a LinkedList.
- * Characters are added to the list and then compared by removing elements
- * from both ends:
- * - removeFirst()
- * - removeLast()
+ * This class validates a palindrome using a Stack
+ * data structure which follows the LIFO principle.
  *
  * @author Developer
- * @version 8.0
+ * @version 5.0
  */
 
 public class PalindromeCheckerApp {
 
-    // Entry point
     public static void main(String[] args) {
+        String input = "noon";
 
-        Scanner scanner = new Scanner(System.in);
+        // Create a Stack to store characters
+        Stack<Character> stack = new Stack<>();
 
-        System.out.println("=== Use Case 8: Palindrome Checker ===");
-        System.out.print("Enter a word or phrase: ");
-        String input = scanner.nextLine();
-
-        if (checkPalindrome(input)) {
-            System.out.println("Result: '" + input + "' is a palindrome.");
-        } else {
-            System.out.println("Result: '" + input + "' is NOT a palindrome.");
+        // Push each character into the stack
+        for (char c : input.toCharArray()) {
+            stack.push(c);
         }
 
-        scanner.close();
-    }
+        // Assume palindrome initially
+        boolean isPalindrome = true;
 
-    // Logic method
-    public static boolean checkPalindrome(String text) {
-
-        String clean = text.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
-        if (clean.isEmpty()) return true;
-
-        LinkedList<Character> list = new LinkedList<>();
-
-        for (char ch : clean.toCharArray()) {
-            list.add(ch);
-        }
-
-        while (list.size() > 1) {
-            char first = list.removeFirst();
-            char last = list.removeLast();
-
-            if (first != last) {
-                return false;
+        // Compare by popping from stack
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
+                isPalindrome = false;
+                break;
             }
         }
 
-        return true;
+        // Display result
+        System.out.println("Input String: " + input);
+        if (isPalindrome) {
+            System.out.println("Result: The string is a palindrome.");
+        } else {
+            System.out.println("Result: The string is NOT a palindrome.");
+        }
     }
 }
