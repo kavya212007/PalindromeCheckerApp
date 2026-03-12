@@ -6,13 +6,19 @@ import java.util.Deque;
  * MAIN CLASS - PalindromeCheckerApp
  * ==========================================================
  * Use Case 7: Deque Based Optimized Palindrome Checker
- * * Description:
+ *
+ * Description:
  * This class validates a palindrome using a Deque (Double Ended Queue).
  * Characters are inserted and compared by removing elements from both ends.
+ *
+ * @author Developer
+ * @version 7.0
  */
+
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
+
         String input = "radar";
 
         // Use Deque for bidirectional traversal
@@ -25,10 +31,10 @@ public class PalindromeCheckerApp {
 
         boolean isPalindrome = true;
 
-        // Compare by removing elements from both ends simultaneously
+        // Compare by removing elements from both ends
         while (deque.size() > 1) {
-            char first = deque.removeFirst(); // Front
-            char last = deque.removeLast();   // Back
+            char first = deque.removeFirst();
+            char last = deque.removeLast();
 
             if (first != last) {
                 isPalindrome = false;
@@ -36,8 +42,9 @@ public class PalindromeCheckerApp {
             }
         }
 
-        // Display the result
+        // Display result
         System.out.println("Input String: " + input);
+
         if (isPalindrome) {
             System.out.println("Result: The string is confirmed as a palindrome.");
         } else {
