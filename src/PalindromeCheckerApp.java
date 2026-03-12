@@ -74,4 +74,5 @@ class StackStrategy implements PalindromeStrategy {
 
         return cleanInput.equals(reversed.toString());
     }
-}
+}:wq
+`:
