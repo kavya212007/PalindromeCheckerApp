@@ -1,54 +1,50 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 /**
- * ==========================================================
  * MAIN CLASS - PalindromeCheckerApp
- * ==========================================================
- * Use Case 7: Deque Based Optimized Palindrome Checker
+ *
+ * Use Case: Normalized Palindrome Validation
  *
  * Description:
- * This class validates a palindrome using a Deque (Double Ended Queue).
- * Characters are inserted and compared by removing elements from both ends.
+ * This class validates a palindrome after preprocessing
+ * the input string.
+ *
+ * Normalization includes:
+ * - Removing spaces and symbols
+ * - Converting to lowercase
+ *
+ * This ensures the palindrome check is logical rather
+ * than character-format dependent.
+ *
+ * Example:
+ * "A man a plan a canal Panama"
  *
  * @author Developer
- * @version 7.0
+ * @version 1.0
  */
-
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
+        // Example input
+        String input = "A man a plan a canal Panama";
 
-        String input = "radar";
+        // Normalize input by removing non-alphanumeric characters and converting to lowercase
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Use Deque for bidirectional traversal
-        Deque<Character> deque = new ArrayDeque<>();
-
-        // Insert characters into the deque
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
-        }
-
+        // Check if normalized string is a palindrome
         boolean isPalindrome = true;
-
-        // Compare by removing elements from both ends
-        while (deque.size() > 1) {
-            char first = deque.removeFirst();
-            char last = deque.removeLast();
-
-            if (first != last) {
+        for (int i = 0; i < normalized.length() / 2; i++) {
+            if (normalized.charAt(i) != normalized.charAt(normalized.length() - 1 - i)) {
                 isPalindrome = false;
                 break;
             }
         }
 
-        // Display result
-        System.out.println("Input String: " + input);
-
-        if (isPalindrome) {
-            System.out.println("Result: The string is confirmed as a palindrome.");
-        } else {
-            System.out.println("Result: The string is NOT a palindrome.");
-        }
+        // Print results
+        System.out.println("Input : " + input);
+        System.out.println("Is Palindrome? : " + isPalindrome);
     }
 }
