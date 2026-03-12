@@ -2,73 +2,104 @@
  * =================================================================
  * MAIN CLASS - PalindromeCheckerApp
  * =================================================================
- * * Use Case 13: Performance Comparison
- * * Description:
- * This class measures and compares the execution
- * performance of palindrome validation algorithms.
- * * At this stage, the application:
- * - Uses a palindrome strategy implementation
- * - Captures execution start and end time
- * - Calculates total execution duration
- * - Displays benchmarking results
- * * This use case focuses purely on performance
- * measurement and algorithm comparison.
- * * The goal is to introduce benchmarking concepts.
- * * @author Developer
- * @version 13.0
+ *
+ * Use Case 13: Performance Comparison of Palindrome Algorithms
+ *
+ * Description:
+ * This class measures and compares execution performance of
+ * different palindrome strategies.
+ * It demonstrates:
+ * - Stack-based strategy
+ * - Recursive strategy
+ * - Dynamic strategy selection (Strategy Pattern)
+ * - Execution time measurement
+ *
+ * Author: Developer
+ * Version: 13.0
  */
 public class PalindromeCheckerApp {
-
-    /**
-     * Application entry point for UC13.
-     * * @param args Command-line arguments
-     */
     public static void main(String[] args) {
-        String input = "level";
+        String testInput = "A man a plan a canal Panama";
 
-        // Using the StackStrategy from the previous use case
-        PalindromeStrategy strategy = new StackStrategy();
+        // Array of strategies to benchmark
+        PalindromeStrategy[] strategies = {
+            new StackStrategy(),
+            new RecursiveStrategy()
+        };
 
-        // Capture Start Time in nanoseconds
-        long startTime = System.nanoTime();
+        for (PalindromeStrategy strategy : strategies) {
+            String strategyName = strategy.getClass().getSimpleName();
 
-        // Execute algorithm
-        boolean isPalindrome = strategy.isValid(input);
+            // Capture start time
+            long startTime = System.nanoTime();
 
-        // Capture End Time
-        long endTime = System.nanoTime();
+            boolean result = strategy.isValid(testInput);
 
-        // Calculate Duration
-        long duration = endTime - startTime;
+            // Capture end time
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
 
-        // Output results in the requested format
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
-        System.out.println("Execution Time : " + duration + " ns");
+            // Output benchmarking results
+            System.out.println("Strategy: " + strategyName);
+            System.out.println("Input: " + testInput);
+            System.out.println("Is Palindrome? : " + result);
+            System.out.println("Execution Time: " + duration + " ns");
+            System.out.println("----------------------------------------");
+        }
     }
 }
 
 /**
- * Interface and Concrete Implementation included
- * for compilation completeness.
+ * =================================================================
+ * INTERFACE - PalindromeStrategy
+ * =================================================================
  */
 interface PalindromeStrategy {
     boolean isValid(String input);
 }
 
+/**
+ * =================================================================
+ * CLASS - StackStrategy
+ * =================================================================
+ */
 class StackStrategy implements PalindromeStrategy {
     @Override
     public boolean isValid(String input) {
         if (input == null) return false;
+
         String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
         java.util.Stack<Character> stack = new java.util.Stack<>();
+
         for (char c : cleanInput.toCharArray()) {
             stack.push(c);
         }
+
         StringBuilder reversed = new StringBuilder();
         while (!stack.isEmpty()) {
             reversed.append(stack.pop());
         }
+
         return cleanInput.equals(reversed.toString());
     }
-}q
+}
+
+/**
+ * =================================================================
+ * CLASS - RecursiveStrategy
+ * =================================================================
+ */
+class RecursiveStrategy implements PalindromeStrategy {
+    @Override
+    public boolean isValid(String input) {
+        if (input == null) return false;
+        String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        return checkRecursive(cleanInput, 0, cleanInput.length() - 1);
+    }
+
+    private boolean checkRecursive(String s, int start, int end) {
+        if (start >= end) return true;
+        if (s.charAt(start) != s.charAt(end)) return false;
+        return checkRecursive(s, start + 1, end - 1);
+    }
+}
