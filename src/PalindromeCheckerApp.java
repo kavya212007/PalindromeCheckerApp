@@ -1,51 +1,54 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
- * ============================================================
+ * ==========================================================
  * MAIN CLASS - PalindromeCheckerApp
- * ============================================================
- *
- * Use Case 3: Reverse String Based Palindrome Check
+ * ==========================================================
+ * Use Case 7: Deque Based Optimized Palindrome Checker
  *
  * Description:
- * This class checks whether a string is a palindrome
- * by reversing the string and comparing it with
- * the original value.
- *
- * At this stage, the application:
- * - Iterates the string in reverse order
- * - Builds a reversed version
- * - Compares original and reversed strings
- * - Displays the validation result
- *
- * This introduces transformation-based validation.
+ * This class validates a palindrome using a Deque (Double Ended Queue).
+ * Characters are inserted and compared by removing elements from both ends.
  *
  * @author Developer
- * @version 3.0
+ * @version 7.0
  */
 
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point.
-     *
-     * @param args Command-line arguments
-     */
     public static void main(String[] args) {
 
-        String input = "madam";  // Hardcoded input
-        String reversed = "";
+        String input = "radar";
 
-        // Iterate from the last character to the first
-        for (int i = input.length() - 1; i >= 0; i--) {
-            reversed = reversed + input.charAt(i);
+        // Use Deque for bidirectional traversal
+        Deque<Character> deque = new ArrayDeque<>();
+
+        // Insert characters into the deque
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
         }
 
-        System.out.println("Original String: " + input);
-        System.out.println("Reversed String: " + reversed);
+        boolean isPalindrome = true;
 
-        if (input.equals(reversed)) {
-            System.out.println("Result: The string is a Palindrome.");
+        // Compare by removing elements from both ends
+        while (deque.size() > 1) {
+            char first = deque.removeFirst();
+            char last = deque.removeLast();
+
+            if (first != last) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        // Display result
+        System.out.println("Input String: " + input);
+
+        if (isPalindrome) {
+            System.out.println("Result: The string is confirmed as a palindrome.");
         } else {
-            System.out.println("Result: The string is NOT a Palindrome.");
+            System.out.println("Result: The string is NOT a palindrome.");
         }
     }
 }
