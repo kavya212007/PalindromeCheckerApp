@@ -3,24 +3,29 @@
  * MAIN CLASS - PalindromeCheckerApp
  * ============================================================
  *
- * Use Case : Recursive Palindrome Checker
+ * Use Case : Recursive Palindrome Checker with Normalization
  *
  * Description:
- * This class validates a palindrome using recursion.
- * Characters are compared from the outer positions
- * moving inward using recursive calls.
+ * This class validates a palindrome after preprocessing
+ * the input string by removing spaces and symbols and converting
+ * it to lowercase.
+ *
+ * Then, it checks palindrome recursively by comparing characters
+ * from the outer positions moving inward.
  *
  * The recursion stops when:
  * - All characters are matched, or
  * - A mismatch is found.
  *
- * This example demonstrates divide-and-conquer
- * logic using method recursion.
+ * This example demonstrates a combination of normalization and
+ * recursive palindrome check logic.
+ *
+ * Example:
+ * "A man a plan a canal Panama"
  *
  * @author Developer
  * @version 1.0
  */
-
 public class PalindromeCheckerApp {
 
     /**
@@ -29,12 +34,15 @@ public class PalindromeCheckerApp {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
+        // Example input
+        String input = "A man a plan a canal Panama";
 
-        String input = "madam";
+        // Normalize input by removing non-alphanumeric characters and converting to lowercase
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
         System.out.println("Input : " + input);
 
-        boolean result = check(input, 0, input.length() - 1);
+        boolean result = check(normalized, 0, normalized.length() - 1);
 
         System.out.println("Is Palindrome? : " + result);
     }
@@ -42,7 +50,7 @@ public class PalindromeCheckerApp {
     /**
      * Recursively checks whether a string is palindrome.
      *
-     * @param s     Input string
+     * @param s     Input string (already normalized)
      * @param start Starting index
      * @param end   Ending index
      * @return true if palindrome, otherwise false
